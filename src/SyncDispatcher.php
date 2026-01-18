@@ -1,5 +1,6 @@
 <?php
 namespace usualtool\Middleware;
+use usualtool\Middleware\RequestHandlerInterface;
 //普通模式
 class SyncDispatcher{
     private array $stack = [];
