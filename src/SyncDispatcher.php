@@ -1,5 +1,6 @@
 <?php
 namespace usualtool\Middleware;
+//同步模式
 class SyncDispatcher{
     private array $stack = [];
     public function pipe($middleware): self{
@@ -11,10 +12,18 @@ class SyncDispatcher{
         foreach (array_reverse($this->stack) as $middleware) {
             $next = function ($req) use ($middleware, $next) {
                 if (is_object($middleware) && method_exists($middleware, 'process')) {
-                    return $middleware->process($req, (object)['handle' => $next]);
+                    return $middleware->process($req, new class($next) implements RequestHandlerInterface {
+                        private $handler;
+                        public function __construct(callable $handler) { $this->handler = $handler; }
+                        public function handle($request) { return ($this->handler)($request); }
+                    });
                 }
-                return $middleware($req, (object)['handle' => $next]);
-            };
+                return $middleware($req, new class($next) implements RequestHandlerInterface {
+                    private $handler;
+                    public function __construct(callable $handler) { $this->handler = $handler; }
+                    public function handle($request) { return ($this->handler)($request); }
+                });
+            }
         }
         return $next($request);
     }
