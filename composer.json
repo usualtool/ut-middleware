@@ -8,8 +8,7 @@
         "name":         "Huang Hui",
         "email":        "usualtool@qq.com"
     }],
-    "require": {
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "usualtool\\Middleware\\": "src"
@@ -17,3 +16,4 @@
     }
 
 }
+
