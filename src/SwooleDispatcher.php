@@ -1,6 +1,6 @@
 <?php
 namespace usualtool\Middleware;
-// Swoole 协程
+//Swoole 协程模式
 class SwooleDispatcher{
     private array $stack = [];
     public function pipe($middleware): self{
@@ -12,10 +12,18 @@ class SwooleDispatcher{
         foreach (array_reverse($this->stack) as $middleware) {
             $next = function ($req) use ($middleware, $next) {
                 if (is_object($middleware) && method_exists($middleware, 'process')) {
-                    return $middleware->process($req, (object)['handle' => $next]);
+                    return $middleware->process($req, new class($next) implements RequestHandlerInterface {
+                        private $handler;
+                        public function __construct(callable $handler) { $this->handler = $handler; }
+                        public function handle($request) { return ($this->handler)($request); }
+                    });
                 }
-                return $middleware($req, (object)['handle' => $next]);
-            };
+                return $middleware($req, new class($next) implements RequestHandlerInterface {
+                    private $handler;
+                    public function __construct(callable $handler) { $this->handler = $handler; }
+                    public function handle($request) { return ($this->handler)($request); }
+                });
+            }
         }
         return $next($request);
     }
