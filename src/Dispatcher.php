@@ -2,31 +2,28 @@
 namespace usualtool\Middleware;
 class Dispatcher{
     /**
-     * 创建指定模式的调度器
+     * 创建调度器实例
      *
-     * @param string|null $mode 'sync'|'swoole'|'workerman'，默认为 'sync'
-     * @return SyncDispatcher|SwooleDispatcher|WorkermanDispatcher
+     * @param string $mode 'sync' (default), 'swoole', or 'workerman'
+     * @return object 返回对应调度器实例
      * @throws \InvalidArgumentException
      */
-    public static function create(?string $mode = null): object{
-        // 默认模式为 'sync'
-        $mode = $mode ?? 'sync';
+    public static function create(string $mode = 'sync'): object{
         switch ($mode) {
             case 'sync':
                 return new SyncDispatcher();
-
             case 'swoole':
                 if (!extension_loaded('swoole')) {
-                    throw new \InvalidArgumentException("请安装Swoole和ut-swoole扩展。");
+                    throw new \InvalidArgumentException('必须安装Swoole扩展。');
                 }
                 return new SwooleDispatcher();
             case 'workerman':
                 if (!class_exists(\Workerman\Worker::class, false)) {
-                    throw new \InvalidArgumentException("请安装ut-Workerman扩展。");
+                    throw new \InvalidArgumentException('必须安装Workerman扩展。');
                 }
                 return new WorkermanDispatcher();
             default:
-                throw new \InvalidArgumentException("请指定模式。");
+                throw new \InvalidArgumentException('模式必须为sync/swoole/workerman中的一种。');
         }
     }
 }
