@@ -1,5 +1,6 @@
 <?php
 namespace usualtool\Middleware;
+use usualtool\Middleware\RequestHandlerInterface;
 //Workerman模式
 class WorkermanDispatcher{
     private array $stack = [];
@@ -14,16 +15,24 @@ class WorkermanDispatcher{
                 if (is_object($middleware) && method_exists($middleware, 'process')) {
                     return $middleware->process($req, new class($next) implements RequestHandlerInterface {
                         private $handler;
-                        public function __construct(callable $handler) { $this->handler = $handler; }
-                        public function handle($request) { return ($this->handler)($request); }
+                        public function __construct(callable $handler){
+                            $this->handler = $handler;
+                        }
+                        public function handle($request){
+                            return ($this->handler)($request);
+                        }
                     });
                 }
                 return $middleware($req, new class($next) implements RequestHandlerInterface {
                     private $handler;
-                    public function __construct(callable $handler) { $this->handler = $handler; }
-                    public function handle($request) { return ($this->handler)($request); }
+                    public function __construct(callable $handler){
+                        $this->handler = $handler;
+                    }
+                    public function handle($request){
+                        return ($this->handler)($request);
+                    }
                 });
-            }
+            };
         }
         return $next($request);
     }
