@@ -1,5 +1,5 @@
 <?php
-namespace UsualTool\Middleware;
+namespace usualtool\Middleware;
 //最终处理器
 class FinalHandler implements RequestHandlerInterface{
     private $callback;
@@ -10,3 +10,4 @@ class FinalHandler implements RequestHandlerInterface{
         return ($this->callback)($request);
     }
 }
+
