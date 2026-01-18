@@ -1,5 +1,5 @@
 {
-    "name":             "usualtool/middleware",
+    "name":             "usualtool/ut-middleware",
     "description":      "UT framework extension:Middleware.",
     "keywords":         ["ut-middleware", "usualtool", "UT Framework"],
     "homepage":         "https://github.com/usualtool",
@@ -15,4 +15,5 @@
             "usualtool\\Middleware\\": "src"
         }
     }
+
 }
