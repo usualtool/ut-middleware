@@ -1,6 +1,6 @@
 {
     "name":             "usualtool/ut-middleware",
-    "description":      "UT framework extension:Middleware.",
+    "description":      "UT Framework Extension:Middleware.",
     "keywords":         ["ut-middleware", "usualtool", "UT Framework"],
     "homepage":         "https://github.com/usualtool",
     "license": "Apache-2.0",
@@ -16,4 +16,5 @@
     }
 
 }
+
 
