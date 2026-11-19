@@ -18,7 +18,7 @@ class Dispatcher{
                 }
                 return new SwooleDispatcher();
             case 'workerman':
-                if (!class_exists(\Workerman\Worker::class, false)) {
+                if (!class_exists(\Workerman\Worker::class)) {
                     throw new \InvalidArgumentException('必须安装Workerman扩展。');
                 }
                 return new WorkermanDispatcher();
