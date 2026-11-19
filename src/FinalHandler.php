@@ -6,8 +6,8 @@ class FinalHandler implements RequestHandlerInterface{
     public function __construct(callable $callback){
         $this->callback = $callback;
     }
-    public function __invoke(){
-        return ($this->callback)();
+    public function __invoke($request = null){
+        return ($this->callback)($request);
     }
     public function handle($request){
         return ($this->callback)($request);
